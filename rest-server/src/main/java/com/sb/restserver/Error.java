@@ -7,23 +7,14 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.Objects;
 
 @RegisterForReflection
-public class Error {
-
-    private final String error;
-    private final String errorDescription;
+public record Error(
+        @JsonProperty("error") String error,
+        @JsonProperty("error_description") String errorDescription) {
 
     @JsonCreator
-    public Error(@JsonProperty("error") String error,
-                 @JsonProperty("error_description") String errorDescription) {
-        this.error = Objects.requireNonNull(error);
-        this.errorDescription = Objects.requireNonNull(errorDescription);
+    public Error {
+        error = Objects.requireNonNull(error);
+        errorDescription = Objects.requireNonNull(errorDescription);
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public String getErrorDescription() {
-        return errorDescription;
-    }
 }
