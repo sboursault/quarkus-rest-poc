@@ -6,12 +6,10 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 import java.io.InputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Provider
 public class RestApiExceptionMapper implements ResponseExceptionMapper<RestApiException> {
 
     @Override
