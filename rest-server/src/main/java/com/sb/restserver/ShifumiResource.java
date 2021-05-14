@@ -2,30 +2,39 @@ package com.sb.restserver;
 
 import io.smallrye.mutiny.Uni;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.awt.*;
 import java.util.Random;
 
-@Path("/play")
-//@Produces(MediaType.APPLICATION_JSON)
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.*;
+
+@Path("/")
+@Produces(APPLICATION_JSON)
 public class ShifumiResource {
 
-    public static enum Choice {
-        ROCK, PAPER, SCISSORS
-    };
+    private int credits = 3;
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/play")
     public Uni<Choice> play() {
 
-        return  Uni
+        if (credits <= 0) {
+            throw new QuotaLimitExceededException("You used all your credits");
+        }
+
+        credits--;
+
+        return Uni
                 .createFrom()
-                .item(
-                        Choice.values()[new Random().nextInt(Choice.values().length)]
-                );
+                .item(Choice.random());
+    }
+
+    @POST
+    @Path("/add-credits")
+    public void addCredits() {
+        credits += 3;
     }
 }

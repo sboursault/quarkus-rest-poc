@@ -1,6 +1,8 @@
 # quarkus-rest-poc
 
-## Create rest-server project
+## Create projects
+    
+    # rest-server
     mvn io.quarkus:quarkus-maven-plugin:1.13.3.Final:create \
         -DprojectGroupId=com.sb \
         -DprojectArtifactId=rest-server \
@@ -8,9 +10,15 @@
         -Dpath="/play" \
         -Dextensions="resteasy,resteasy-jackson"
     
-## Run rest-server
+    # rest client
+    mvn io.quarkus:quarkus-maven-plugin:1.13.3.Final:create \
+        -DprojectGroupId=com.sb \
+        -DprojectArtifactId=rest-client \
+        -Dextensions="rest-client,rest-client-jackson"
     
-    cd rest-server
+## Run project in dev mode
+    
+    cd <project>
     ./mvnw compile quarkus:dev
 
 ## Test rest-server
