@@ -13,7 +13,7 @@ public class QuotaLimitExceededExceptionMapper implements ExceptionMapper<QuotaL
     public Response toResponse(QuotaLimitExceededException exception) {
         return Response
                 .status(TOO_MANY_REQUESTS)
-                .entity(new Error("QUOTA_LIMIT_EXCEEDED", "You used all your credits"))
+                .entity(new Error("QUOTA_LIMIT_EXCEEDED", exception.getMessage()))
                 .build();
     }
 

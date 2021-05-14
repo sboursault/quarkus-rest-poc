@@ -1,9 +1,9 @@
 package com.sb.restclient;
 
 import com.sb.restclient.adapter.RestApiException;
+import com.sb.restclient.adapter.ShifumiService;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
-import com.sb.restclient.adapter.ShifumiService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
@@ -27,7 +27,6 @@ public class ApplicationMain implements QuarkusApplication {
         //    System.err.println("status:" + e.getResponse().getStatus());
         //    System.err.println("reason: " + e.getResponse().readEntity(String.class));
         //}
-
 
         try {
             System.out.println(service.play());
