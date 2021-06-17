@@ -13,5 +13,9 @@ public interface ShifumiService {
 
     @POST
     @Path("/play")
-    Choice play();
+    Choice play();  // try with uni
+
+    @POST
+    @Path("/add-credits")
+    Void addCredits();
 }

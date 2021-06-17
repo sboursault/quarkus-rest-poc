@@ -1,25 +1,35 @@
 package com.sb.restclient;
 
+import com.sb.restclient.adapter.Choice;
 import com.sb.restclient.adapter.RestApiException;
 import com.sb.restclient.adapter.ShifumiService;
-import io.quarkus.runtime.QuarkusApplication;
-import io.quarkus.runtime.annotations.QuarkusMain;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.Objects;
 
-@QuarkusMain
-public class ApplicationMain implements QuarkusApplication {
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+
+@Path("/gateway")
+@Produces(APPLICATION_JSON)
+public class ShifumiGatewayResource {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShifumiGatewayResource.class);
 
     @Inject
     @RestClient
     ShifumiService service;
 
-    @Override
-    public int run(String... args) throws Exception {
+    @POST
+    @Path("/play")
+    public Choice play() {
 
-        System.out.println("\n1... 2... 3...\n\n");
+
 
         //try {
         //    System.out.println("play: " + service.play());
@@ -29,19 +39,23 @@ public class ApplicationMain implements QuarkusApplication {
         //}
 
         try {
-            System.out.println(service.play());
+            Choice choice = service.play();
+            LOGGER.info("Shifumi service returned {}", choice);
+            return choice;
         } catch (RestApiException e) {
             if (Objects.equals(e.getError(), "QUOTA_LIMIT_EXCEEDED")) {
-                System.out.println("You reached your quota limit :(");
+                LOGGER.info("You reached your quota limit :(");
+                return null;
             } else {
                 throw e;
             }
         }
 
-        System.out.println("\n");
+    }
 
-        return 0;
-
-        // zipkin quarkus ?
+    @POST
+    @Path("/add-credits")
+    public void addCredits() {
+        service.addCredits();
     }
 }
