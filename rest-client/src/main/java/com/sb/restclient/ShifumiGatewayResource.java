@@ -3,6 +3,7 @@ package com.sb.restclient;
 import com.sb.restclient.adapter.Choice;
 import com.sb.restclient.adapter.RestApiException;
 import com.sb.restclient.adapter.ShifumiService;
+import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class ShifumiGatewayResource {
 
     @POST
     @Path("/play")
-    public Choice play() {
+    public Uni<Choice> play() {
 
 
 
@@ -39,13 +40,12 @@ public class ShifumiGatewayResource {
         //}
 
         try {
-            Choice choice = service.play();
-            LOGGER.info("Shifumi service returned {}", choice);
-            return choice;
+            return service.play()
+                    .invoke(choice -> LOGGER.info("Shifumi service returned {}", choice));
         } catch (RestApiException e) {
             if (Objects.equals(e.getError(), "QUOTA_LIMIT_EXCEEDED")) {
                 LOGGER.info("You reached your quota limit :(");
-                return null;
+                return Uni.createFrom().nothing();
             } else {
                 throw e;
             }

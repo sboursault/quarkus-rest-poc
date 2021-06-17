@@ -1,5 +1,6 @@
 package com.sb.restclient.adapter;
 
+import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -13,9 +14,9 @@ public interface ShifumiService {
 
     @POST
     @Path("/play")
-    Choice play();  // try with uni
+    Uni<Choice> play();  // try with uni
 
     @POST
     @Path("/add-credits")
-    Void addCredits();
+    Uni<Void> addCredits();
 }
